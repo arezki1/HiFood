@@ -86,8 +86,8 @@
             $_SESSION['user'] = $row; 
              
             // Redirect the user to the private members-only page. 
-            header("Location: hello-world.php"); 
-            die("Redirecting to: ../hello-world.php"); 
+            header("Location: main.php"); 
+            die("Redirecting to: main.php"); 
         } 
         else 
         { 
