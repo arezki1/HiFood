@@ -1,3 +1,9 @@
+  <!--https://www.youtube.com/watch?v=keO6egndYrE-->
+      <!--map tutorial by Dave Wallace on YouTube-->
+      <!-- http://www.w3schools.com/jsref/met_loc_reload.asp -->
+      <!-- https://developers.google.com/maps/documentation/javascript/tutorial -->
+      <!-- https://developers.google.com/maps/documentation/javascript/tutorial#libraries -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,14 +35,15 @@
 
 <script>
     var map;
+    var markerSearch;
     
   function initialise(location){
-      console.log(location);
+      
       var service;
       var currentPosition =new google.maps.LatLng(location.coords.latitude,location.coords.longitude);
       var mapOptions={
 
-          center: new google.maps.LatLng(location.coords.latitude,location.coords.longitude),
+          center: currentPosition,
           
           zoom:14,
           mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -50,7 +57,40 @@
           map: map
         });
         
-       
+        var request = {
+    location: currentPosition,
+    radius: '500',
+    types: ['pharmacy']
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+        
+        var marker = new google.maps.Marker({
+         position:results[i].geometry.location,
+          map: map
+        });
+      
+    }
+  }
+        
+    console.log(results);   
+    
+     var cityCircle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#0000FF',
+      fillOpacity: 0.35,
+      map: map,
+      center: currentPosition,
+      radius: 2000
+    });
   }
   
   $(document).ready(function(){
