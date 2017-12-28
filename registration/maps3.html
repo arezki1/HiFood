@@ -25,6 +25,20 @@
             margin:0;
             padding:0;
         }
+        
+         #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
     </style>
     
     </head>
@@ -80,7 +94,8 @@ function performSearch(){
           {
                       zoom: 12,
                       center:current,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                      mapTypeId: google.maps.MapTypeId.ROADMAP,
+                     
             };
             
             // Create the map, and place it in the map_canvas div
@@ -92,7 +107,15 @@ function performSearch(){
                       title: "Your current location!"
             });
             
+            // You are here text 
             
+            var infowindow = new google.maps.InfoWindow({
+                content: "You are here!"
+              });
+              infowindow.open(map,marker);
+             
+ 
+ 
              service = new google.maps.places.PlacesService(map);
             
             //this ensures we wait until the map bounds are initialies before we perform the search
@@ -137,32 +160,10 @@ var trafficLayer = new google.maps.TrafficLayer();
     $('#toggle_trafic').click(trac);
     
     
-    //direction
-  
-//   var direction = new new google.maps.DirectionsService.route(
-      
-//       {
-//   origin: current,
-//   destination: current,
-//   travelMode: TravelMode,
-//   transitOptions: TransitOptions,
-//   drivingOptions: DrivingOptions,
-//   unitSystem: UnitSystem,
-//   //waypoints[]: DirectionsWaypoint,
-//   optimizeWaypoints: Boolean,
-//   provideRouteAlternatives: Boolean,
-//   avoidFerries: Boolean,
-//   avoidHighways: Boolean,
-//   avoidTolls: Boolean,
-//   region: String
-
-//   });
-  
-  }
-  
-  
- 
-  
+   // Direction
+   
+   
+  } // end of the main function
   $(document).ready(function(){
       
       navigator.geolocation.getCurrentPosition(initialise);
@@ -178,7 +179,7 @@ var trafficLayer = new google.maps.TrafficLayer();
 <button id="toggle_trafic">Trafic</button>
 <button id="toggle_weather">Weather</button>
 
-
+ 
 
 </body>
 </html>

@@ -1,0 +1,61 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Find your way</title>
+    
+    <meta  name="viewport"content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    
+    
+
+    </head>
+<body>
+
+
+<header>
+    <h1> JSON and Ajax</h1>
+    <button id="btn"> Info</button>
+</header>
+
+<div id="animal"></div>
+
+<script>
+
+
+ var request= new XMLHttpRequest();
+ request.open('Get','https://learnwebcode.github.io/json-example/animals-1.json');
+ request.onload= function(){
+     
+     var data=JSON.parse(request.responseText);
+     
+      $(document).ready(function(){
+ $("#btn").click(function(){
+         
+        fun(data);
+     });
+  });
+      
+      
+ }
+  request.send();
+  
+ function fun(data){
+     var names="";
+     for(var i=0;i<data.length;i++){
+           names =$("#animal").html("The animal name is "+ data[i].name);
+          
+           console.log(names++);
+     }
+      }
+     
+    
+</script>
+
+
+
+</body>
+</html?

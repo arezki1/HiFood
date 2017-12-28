@@ -1,102 +1,292 @@
-<!DOCTYPE HTML>
+  <!--https://www.youtube.com/watch?v=keO6egndYrE-->
+      <!--map tutorial by Dave Wallace on YouTube-->
+      <!-- http://www.w3schools.com/jsref/met_loc_reload.asp -->
+      <!-- https://developers.google.com/maps/documentation/javascript/tutorial -->
+      <!-- https://developers.google.com/maps/documentation/javascript/tutorial#libraries -->
+      <!-- New video https://www.youtube.com/watch?v=pRiQeo17u6c-->
+<!DOCTYPE html>
 <html>
-<head>
-<title>Basic GeoLocation Map</title>
-    <!-- Google Maps and Places API -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+    <head>
+    <title>Find your way</title>
     
-    <!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script type="text/javascript">
-    function initGeolocation()
-    {
-            if( navigator.geolocation )
-            {
+    <meta  name="viewport"content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+    <style>
+        
+        #map-canvas{
+            height:100%;
+        }
+        
+        html,body{
+            height:500px;
+            margin:0;
+            padding:0;
+        }
+        
+         #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+       #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
 
-              // Call getCurrentPosition with success and failure callbacks
-              navigator.geolocation.getCurrentPosition( success, fail );
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+      #right-panel {
+        height: 100%;
+        float: right;
+        width: 390px;
+        overflow: auto;
+      }
+      #map {
+        margin-right: 400px;
+      }
+      #floating-panel {
+        background: #fff;
+        padding: 5px;
+        font-size: 14px;
+        font-family: Arial;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+        display: none;
+      }
+      @media print {
+        #map {
+          height: 500px;
+          margin: 0;
         }
-        else
-        {
-              alert("Sorry, your browser does not support geolocation services.");
+        #right-panel {
+          float: none;
+          width: auto;
         }
+      }
+        
+    </style>
+    
+    </head>
+<body>
+
+
+
+<script>
+var map;
+
+var service;
+
+
+
+  function initialise(location){
+      
+      
+      
+      function handleSearchResults(results, status){
+          
+          // Direction
+   
+   
+    
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+     directionsDisplay.setMap(map);
+     
+     
+  directionsDisplay.setPanel(document.getElementById('right-panel'));
+  var control = document.getElementById('floating-panel');
+        control.style.display = 'block';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+  var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };
+       
+       document.getElementById('floating-panel').addEventListener('change', onChangeHandler);
+      
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    
+           if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+         
+         directionsService.route({
+          origin: current,
+          destination: results[i].vicinity,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } 
+        });
+        
+       console.log( results[i].vicinity);
+       
+               var option = document.createElement("option");
+                option.text = results[i].vicinity;
+                option.value = results[i].vicinity;
+                var select = document.getElementById("end1");
+                select.appendChild(option);  
+                    }
+                       
+        
+      
+    
     }
+        
+  
+      }
+ //end of direction
+   
+   console.log(results);
+   
+   
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+        
+        var marker = new google.maps.Marker({
+         position:results[i].geometry.location,
+          map: map,
+          title: results[i].vicinity,
+        
 
-     var map;
-     function success(position)
-     {
-           // Define the coordinates as a Google Maps LatLng Object
-           var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          
+        });
+     
+    }
+    }
+}
 
-           // Prepare the map options
-           var mapOptions =
+
+function performSearch(){
+    
+    
+      var request = {
+          
+    bounds:map.getBounds(),
+    name: "Milano"
+  };
+
+      service.nearbySearch(request, handleSearchResults);
+}
+      
+      
+      
+      console.log(location);
+      
+      var current= new google.maps.LatLng(location.coords.latitude,location.coords.longitude);
+      
+        var mapOptions =
           {
-                      zoom: 14,
-                      center: coords,
-                      mapTypeControl: false,
-                      navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+                      zoom: 12,
+                      center:current,
                       mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-
+            
             // Create the map, and place it in the map_canvas div
-            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-			
-			//search for schools within 1500 metres of our current location, and as a marker use school.png
-			placesRequest('italian',coords,4000,['pizza'],'images/school.png');
-
-
-            // Place the initial marker
+            map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            
             var marker = new google.maps.Marker({
-                      position: coords,
+                      position: current,
                       map: map,
                       title: "Your current location!"
             });
-			
-        }
+            
+            
+             service = new google.maps.places.PlacesService(map);
+            
+            //this ensures we wait until the map bounds are initialies before we perform the search
+            google.maps.event.addListenerOnce(map,'bounds_changed',performSearch);
+            
+          //redo the search when we click on the refresh button
+          $('#refresh').click(performSearch);
+          
+           var cityCircle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#0000FF',
+      fillOpacity: 0.35,
+      map: map,
+      center: current,
+      radius: 60
+    });
+    
+    
+    //trafic 
 
-        function fail()
-        {
-              // Could not obtain location
-        }
-		
-		//Request places from Google
-		function placesRequest(title,latlng,radius,types,icon)
-		{
-			//Parameters for our places request
-			var request = {
-				location: latlng,
-				radius: radius,
-				types: types
-			};
-			//Make the service call to google
-			var callPlaces = new google.maps.places.PlacesService(map);
-			callPlaces.search(request, function(results,status){
-				//trace what Google gives us backplaceser
-				$.each(results, function(i,place){
-					var placeLoc = place.geometry.location;
-					 var thisplace = new google.maps.Marker({
-						 map: map,
-						 position: place.geometry.location,
-						 icon: icon,
-						 title: place.name
-					 });
-				})
-			});
-			
-		}
-		
-	
-        </script>
-</head>
-<body onload="initGeolocation();">
-    <div style="position:absolute; width:380px; height: 100%; overflow:auto; float:left; padding-left:10px; padding-right:10px;">
-        <h1>Google Places API</h1>
-        <p>
-		We're using both google places (to search for things in a certain category) AND google maps (to put the things on a map)~!	PLUS we're using geolocatoin to automatically centre the map on the user's current location!
-		</p>
+var trafficLayer = new google.maps.TrafficLayer();
+     
+     
+    function trafic(){
+        
+         if(trafficLayer.getMap()){
+         
+         trafficLayer.setMap(null);
+     }
+     
+     else{
+         
+          trafficLayer.setMap(map);
+     }
+  
+    
+        
+    }
+    
+    $('#toggle_trafic').click(trafic);
+    
+    
+   
+  } // end of the main function
+  $(document).ready(function(){
+      
+      navigator.geolocation.getCurrentPosition(initialise);
+  });
+    
+    
+</script>
+
+
+<div id="map-canvas"></div>
+
+<button id="refresh">Refresh</button>
+<button id="toggle_trafic">Trafic</button>
+<button id="toggle_weather">Weather</button>
+  <div id="right-panel"></div>
+ <div id="floating-panel">
+   
+      
+
+    <b>Search your restaurant here: </b>
+    <select id="end1">
+      <option value="chicago, il">Chicago</option>
+      <option value="Galway, mo">Galway</option>
+     
+     
+      
     </div>
-    <!-- map div container -->
 
-<div id="map_canvas" style="height:500px; margin-left:400px; border-right: 1px solid #666666; border-bottom: 1px solid #666666; border-top: 1px solid #AAAAAA; border-left: 1px solid #AAAAAA;"></div>
 </body>
 </html>
