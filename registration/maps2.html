@@ -132,9 +132,19 @@ var service;
     for (var i = 0; i < results.length; i++) {
           var current= new google.maps.LatLng(location.coords.latitude,location.coords.longitude);
        var current1=current.toString();
+       
+        //console.log( current1);
+      console.log(current);
+               var option = document.createElement("option");
+                option.text = results[i].vicinity;
+                option.value = results[i].vicinity;
+                var select = document.getElementById("end1");
+                select.appendChild(option); 
+                
+                 console.log("here is " +results);
          directionsService.route({
-          origin: "dublin",
-          destination: results[i].name,
+          origin: current,
+          destination:results[i].vicinity,
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
@@ -142,13 +152,7 @@ var service;
           } 
         });
        
-       console.log( current1);
-       console.log(current);
-               var option = document.createElement("option");
-                option.text = results[i].name;
-                option.value = results[i].name;
-                var select = document.getElementById("end1");
-                select.appendChild(option);  
+       
                     }
                        
         
@@ -169,7 +173,7 @@ var service;
         var marker = new google.maps.Marker({
          position:results[i].geometry.location,
           map: map,
-          title: results[i].vicinity,
+          title: "Milano - "+results[i].vicinity,
         
     
           
@@ -186,7 +190,7 @@ function performSearch(){
       var request = {
           
     bounds:map.getBounds(),
-    name: "Milano"
+    name: "Milano - Dublin"
   };
 
       service.nearbySearch(request, handleSearchResults);
@@ -282,8 +286,8 @@ var trafficLayer = new google.maps.TrafficLayer();
 
     <b>Search your restaurant here: </b>
     <select id="end1">
-      <option value="chicago, il">Chicago</option>
-      <option value="Galway, mo">Galway</option>
+      <option value="s">Search...</option>
+      <option value="">Galway</option>
      
      
       

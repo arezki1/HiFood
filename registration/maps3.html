@@ -61,12 +61,12 @@ function handleSearchResults(results, status){
         var marker = new google.maps.Marker({
          position:results[i].geometry.location,
           map: map,
-          title: results[i].vicinity,
+          title: " Milano - "+results[i].vicinity,
         
 
           
         });
-      
+      console.log(results[i].vicinity);
     }
     }
 }
@@ -78,7 +78,7 @@ function performSearch(){
       var request = {
           
     bounds:map.getBounds(),
-    name: "Milano"
+    name: "Milano - Dublin"
   };
 
       service.nearbySearch(request, handleSearchResults);

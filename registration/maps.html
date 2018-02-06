@@ -70,7 +70,7 @@ var service;
         var marker = new google.maps.Marker({
          position:results[i].geometry.location,
           map: map,
-          title: results[i].vicinity,
+         title: "Milano - "+results[i].vicinity,
         
 
           
@@ -87,7 +87,7 @@ function performSearch(){
       var request = {
           
     bounds:map.getBounds(),
-    name: "Milano"
+    name: "Milano - Dublin"
   };
 
       service.nearbySearch(request, handleSearchResults);
@@ -211,32 +211,19 @@ var trafficLayer = new google.maps.TrafficLayer();
     <b>Start: </b>
     <select id="start">
       <option value="Dublin, il">Dublin</option>
-      <option value="st louis, mo">St Louis</option>
-      <option value="joplin, mo">Joplin, MO</option>
-      <option value="oklahoma city, ok">Oklahoma City</option>
-      <option value="amarillo, tx">Amarillo</option>
-      <option value="gallup, nm">Gallup, NM</option>
-      <option value="flagstaff, az">Flagstaff, AZ</option>
-      <option value="winona, az">Winona</option>
-      <option value="kingman, az">Kingman</option>
-      <option value="barstow, ca">Barstow</option>
-      <option value="san bernardino, ca">San Bernardino</option>
-      <option value="los angeles, ca">Los Angeles</option>
+      
     </select>
     <b>End: </b>
     <select id="end">
-      <option value="chicago, il">Chicago</option>
-      <option value="wexford">Cork city</option>
-      <option value="joplin, mo">Joplin, MO</option>
-      <option value="oklahoma city, ok">Oklahoma City</option>
-      <option value="amarillo, tx">Amarillo</option>
-      <option value="gallup, nm">Gallup, NM</option>
-      <option value="flagstaff, az">Flagstaff, AZ</option>
-      <option value="winona, az">Winona</option>
-      <option value="kingman, az">Kingman</option>
-      <option value="barstow, ca">Barstow</option>
-      <option value="san bernardino, ca">San Bernardino</option>
-      <option value="los angeles, ca">Los Angeles</option>
+    
+      <option value="38 Dawson Street, Dublin 2">Milano Dawson Street</option>
+      <option value="19 Essex Street East, Dublin 2">Milano Essex Street</option>
+      <option value="UNIT 1, HANOVER QUAY">Milano - Grand Canal</option>
+      <option value="62 Ranelagh, Dublin 6">62 Ranelagh, Dublin 6</option>
+      <option value="Blanchardstown Centre, Blanchardstown, Dublin">Milano Blanchardstown</option>
+      <option value="1-2 Haddington Rd, Dublin 4">Milano - Haddington Road</option>
+      <option value="Unit 4, Western End, Liffey Valley Shopping Centre, Dublin 22">Milano Liffey Valley</option>
+      <option value="6 Excise Walk, North Wall Clarion Quay, Dublin">Milano Clarion Quay</option>
       
     </div>
 

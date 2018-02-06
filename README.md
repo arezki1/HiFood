@@ -12,3 +12,13 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+
+
+1) login system
+2) Rating restaurant/ image upload and count it by liked click from user
+3)food order function
+4) Alert restaurantwith time and location so restaurant can prepare the food
+5) Google API map locate the location
+6) Google API direction and places
